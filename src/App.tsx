@@ -1,22 +1,8 @@
-import React, { useState, useRef } from 'react';
-import * as Tone from 'tone';
+import React, { useState } from 'react';
+import { musicEngine } from './musicEngine';
 
 function App() {
-  const [code, setCode] = useState(`// Welcome to Tone.js playground!
-// Try creating a simple synth:
-
-const synth = new Tone.Synth().toDestination();
-
-// Play a note
-synth.triggerAttackRelease("C4", "8n");
-
-// Create a sequence
-const seq = new Tone.Sequence((time, note) => {
-  synth.triggerAttackRelease(note, 0.1, time);
-}, ["C4", "E4", "G4", "B4"]).start(0);
-
-// Start the transport
-Tone.Transport.start();`);
+  const [code, setCode] = useState(musicEngine.getDefaultCode());
 
   const [messages, setMessages] = useState([
     {
@@ -28,48 +14,18 @@ Tone.Transport.start();`);
   ]);
 
   const [inputMessage, setInputMessage] = useState('');
-  const [isPlaying, setIsPlaying] = useState(false);
-  const executionContextRef = useRef<Record<string, unknown>>({});
 
   const handleRunCode = async () => {
-    try {
-      // Ensure audio context is started
-      if (Tone.context.state !== 'running') {
-        await Tone.start();
-      }
+    const result = await musicEngine.executeCode(code);
 
-      // Stop any currently playing audio
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+    const newMessage = {
+      id: messages.length + 1,
+      type: 'user',
+      content: 'Ran the code in the editor',
+      timestamp: new Date().toLocaleTimeString()
+    };
 
-      // Clear previous synths and effects
-      Object.values(executionContextRef.current).forEach((item: unknown) => {
-        if (item && typeof item === 'object' && 'dispose' in item && typeof item.dispose === 'function') {
-          item.dispose();
-        }
-      });
-      executionContextRef.current = {};
-
-      // Create a safe execution context with Tone.js available
-      const executeCode = new Function('Tone', 'context', `
-        ${code}
-        return { Tone, context };
-      `);
-
-      // Execute the code
-      const result = executeCode(Tone, executionContextRef.current);
-      executionContextRef.current = result.context || {};
-
-      setIsPlaying(true);
-
-      // Add success message to chat
-      const newMessage = {
-        id: messages.length + 1,
-        type: 'user',
-        content: 'Ran the code in the editor',
-        timestamp: new Date().toLocaleTimeString()
-      };
-
+    if (result.success) {
       const response = {
         id: messages.length + 2,
         type: 'assistant',
@@ -78,53 +34,29 @@ Tone.Transport.start();`);
       };
 
       setMessages(prev => [...prev, newMessage, response]);
-
-    } catch (error) {
-      console.error('Error executing code:', error);
-
-      const errorMessage = {
-        id: messages.length + 1,
-        type: 'user',
-        content: 'Attempted to run code',
-        timestamp: new Date().toLocaleTimeString()
-      };
-
+    } else {
       const errorResponse = {
         id: messages.length + 2,
         type: 'assistant',
-        content: `❌ There was an error in your code: ${error instanceof Error ? error.message : 'Unknown error'}. Please check your syntax and try again.`,
+        content: `❌ There was an error in your code: ${result.error}. Please check your syntax and try again.`,
         timestamp: new Date().toLocaleTimeString()
       };
 
-      setMessages(prev => [...prev, errorMessage, errorResponse]);
+      setMessages(prev => [...prev, newMessage, errorResponse]);
     }
   };
 
   const handleStopCode = () => {
-    try {
-      Tone.Transport.stop();
-      Tone.Transport.cancel();
+    musicEngine.stopAudio();
 
-      // Dispose of all created objects
-      Object.values(executionContextRef.current).forEach((item: unknown) => {
-        if (item && typeof item === 'object' && 'dispose' in item && typeof item.dispose === 'function') {
-          item.dispose();
-        }
-      });
+    const stopMessage = {
+      id: messages.length + 1,
+      type: 'assistant',
+      content: '⏹️ Audio stopped and all synths disposed.',
+      timestamp: new Date().toLocaleTimeString()
+    };
 
-      setIsPlaying(false);
-
-      const stopMessage = {
-        id: messages.length + 1,
-        type: 'assistant',
-        content: '⏹️ Audio stopped and all synths disposed.',
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      setMessages(prev => [...prev, stopMessage]);
-    } catch (error) {
-      console.error('Error stopping audio:', error);
-    }
+    setMessages(prev => [...prev, stopMessage]);
   };
 
   const handleSendMessage = (e: React.FormEvent) => {
@@ -163,7 +95,7 @@ Tone.Transport.start();`);
             </button>
             <button
               onClick={handleStopCode}
-              disabled={!isPlaying}
+              disabled={!musicEngine.getIsPlaying()}
             >
               Stop
             </button>
