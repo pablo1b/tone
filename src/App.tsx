@@ -41,7 +41,7 @@ Tone.Transport.start();`);
       // Stop any currently playing audio
       Tone.Transport.stop();
       Tone.Transport.cancel();
-      
+
       // Clear previous synths and effects
       Object.values(executionContextRef.current).forEach((item: unknown) => {
         if (item && typeof item === 'object' && 'dispose' in item && typeof item.dispose === 'function') {
@@ -81,7 +81,7 @@ Tone.Transport.start();`);
 
     } catch (error) {
       console.error('Error executing code:', error);
-      
+
       const errorMessage = {
         id: messages.length + 1,
         type: 'user',
@@ -104,14 +104,14 @@ Tone.Transport.start();`);
     try {
       Tone.Transport.stop();
       Tone.Transport.cancel();
-      
+
       // Dispose of all created objects
       Object.values(executionContextRef.current).forEach((item: unknown) => {
         if (item && typeof item === 'object' && 'dispose' in item && typeof item.dispose === 'function') {
           item.dispose();
         }
       });
-      
+
       setIsPlaying(false);
 
       const stopMessage = {
@@ -152,49 +152,54 @@ Tone.Transport.start();`);
 
   return (
     <main>
-      <div>
-        <section>
-          <header>
-            <fieldset role="group">
-              <button onClick={handleRunCode}>
-                Play
-              </button>
-              <button 
-                onClick={handleStopCode}
-                disabled={!isPlaying}
-              >
-                Stop
-              </button>
-              <button onClick={() => setCode('')}>
-                Clear
-              </button>
-            </fieldset>
-          </header>
+      <section>
+        <header>
+          <div>
+            <p>Musical Agent</p>
+          </div>
+          <fieldset>
+            <button onClick={handleRunCode}>
+              Play
+            </button>
+            <button
+              onClick={handleStopCode}
+              disabled={!isPlaying}
+            >
+              Stop
+            </button>
+            <button onClick={() => setCode('')}>
+              Clear
+            </button>
+          </fieldset>
+        </header>
 
-          <article style={{ flex: 1, display: 'flex' }}>
-            <textarea
-              value={code}
-              onChange={(e) => setCode(e.target.value)}
-              placeholder="Write your Tone.js code here..."
-            />
-          </article>
-        </section>
+        <article>
+          <textarea
+            value={code}
+            onChange={(e) => setCode(e.target.value)}
+            placeholder="Write your Tone.js code here..."
+          />
+        </article>
+      </section>
 
-        <section>
-          <header>
-            <p>Chat music</p>
-          </header>
+      <section>
+        <header>
+          <p>Chat music</p>
+          <fieldset>
+            <button onClick={() => { }}>
+              Clear
+            </button>
+          </fieldset>
+        </header>
 
-          <article>
-            <section>
-              {messages.map((message) => (
-                <div key={message.id}>
-                  <p>{message.content}</p>
-                  <small>{message.timestamp}</small>
-                </div>
-              ))}
-            </section>
+          {messages.map((message) => (
+            <div key={message.id}>
+              <p>{message.content}</p>
+              <small>{message.timestamp}</small>
+            </div>
+          ))}
 
+          <div style={{ width: '100%' }}>
             <form onSubmit={handleSendMessage}>
               <input
                 type="text"
@@ -206,9 +211,8 @@ Tone.Transport.start();`);
                 Send
               </button>
             </form>
-          </article>
-        </section>
-      </div>
+          </div>
+      </section>
     </main>
   );
 }
