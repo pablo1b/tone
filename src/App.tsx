@@ -1,24 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import { musicEngine } from './musicEngine';
-import { claudeService, type ChatMessage } from './services/claudeService';
+import React, { useEffect, useState } from 'react';
+import { enhancedClaudeService } from './services/enhancedClaudeService';
+import { codeActionService } from './services/codeActionService';
 import { ApiKeySettings } from './components/ApiKeySettings';
 import { Modal } from './components/Modal';
 import { CodeEditor } from './components/CodeEditor';
 import { ChatPanel } from './components/ChatPanel';
 import { useApiKey } from './hooks/useApiKey';
+import { AppProvider } from './context/AppContext';
+import { useAppContext } from './context/useAppContext';
 
-function App() {
-  const [code, setCode] = useState(musicEngine.getDefaultCode());
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      id: 1,
-      type: 'assistant',
-      content: 'Hello! I\'m here to help you with Tone.js. What would you like to create?',
-      timestamp: new Date().toLocaleTimeString()
-    }
-  ]);
+function AppContent() {
+  const { state, updateCode, executeCode, stopAudio, addMessage, clearMessages } = useAppContext();
   const [inputMessage, setInputMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const { apiKey, isValidKey, saveApiKey, clearApiKey } = useApiKey();
 
@@ -26,13 +19,13 @@ function App() {
   useEffect(() => {
     const savedKey = localStorage.getItem('anthropic_api_key');
     if (savedKey && savedKey.startsWith('sk-ant-')) {
-      claudeService.updateApiKey(savedKey);
+      enhancedClaudeService.updateApiKey(savedKey);
     }
   }, []);
 
   useEffect(() => {
     if (isValidKey && apiKey) {
-      claudeService.updateApiKey(apiKey);
+      enhancedClaudeService.updateApiKey(apiKey);
     }
   }, [apiKey, isValidKey]);
 
@@ -44,54 +37,36 @@ function App() {
     }
   }, [isValidKey]);
 
+  // Set up code action service callbacks
+  useEffect(() => {
+    codeActionService.setCallbacks({
+      updateCode: (code: string) => updateCode(code, 'claude'),
+      executeCode,
+      stopAudio,
+      getCurrentCode: () => state.code,
+      getAppState: () => ({
+        isPlaying: state.isPlaying,
+        executionHistory: state.executionHistory
+      })
+    });
+  }, [updateCode, executeCode, stopAudio, state.code, state.isPlaying, state.executionHistory]);
+
   const handleRunCode = async () => {
-    const result = await musicEngine.executeCode(code);
-
-    const newMessage: ChatMessage = {
-      id: messages.length + 1,
+    addMessage({
       type: 'user',
-      content: 'Ran the code in the editor',
-      timestamp: new Date().toLocaleTimeString()
-    };
-
-    if (result.success) {
-      const response: ChatMessage = {
-        id: messages.length + 2,
-        type: 'assistant',
-        content: 'Great! Your Tone.js code has been executed successfully. The audio should be playing now. You can modify the code and run it again to hear the changes!',
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      setMessages(prev => [...prev, newMessage, response]);
-    } else {
-      const errorResponse: ChatMessage = {
-        id: messages.length + 2,
-        type: 'assistant',
-        content: `Error: There was an error in your code: ${result.error}. Please check your syntax and try again.`,
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      setMessages(prev => [...prev, newMessage, errorResponse]);
-    }
+      content: 'Ran the code in the editor'
+    });
+    await executeCode();
   };
 
   const handleStopCode = () => {
-    musicEngine.stopAudio();
-
-    const stopMessage: ChatMessage = {
-      id: messages.length + 1,
-      type: 'assistant',
-      content: 'Audio stopped and all synths disposed.',
-      timestamp: new Date().toLocaleTimeString()
-    };
-
-    setMessages(prev => [...prev, stopMessage]);
+    stopAudio();
   };
 
   const handleApiKeyValidated = (apiKey: string) => {
     const success = saveApiKey(apiKey);
     if (success) {
-      claudeService.updateApiKey(apiKey);
+      enhancedClaudeService.updateApiKey(apiKey);
     }
   };
 
@@ -99,81 +74,68 @@ function App() {
     setShowApiKeyModal(false);
   };
 
-  const handleClearMessages = () => {
-    setMessages([
-      {
-        id: 1,
-        type: 'assistant',
-        content: 'Hello! I\'m here to help you with Tone.js. What would you like to create?',
-        timestamp: new Date().toLocaleTimeString()
-      }
-    ]);
-  };
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim() || !isValidKey) return;
 
-    const userMessage: ChatMessage = {
-      id: messages.length + 1,
+    addMessage({
       type: 'user',
-      content: inputMessage,
-      timestamp: new Date().toLocaleTimeString()
-    };
+      content: inputMessage
+    });
 
-    setMessages(prev => [...prev, userMessage]);
     setInputMessage('');
-    setIsLoading(true);
 
     try {
-      const response = await claudeService.sendMessage({
+      const response = await enhancedClaudeService.sendMessage({
         message: inputMessage,
-        currentCode: code,
-        messages: messages
+        currentCode: state.code,
+        messages: state.messages,
+        appState: {
+          isPlaying: state.isPlaying,
+          executionHistory: state.executionHistory
+        }
       });
 
-      const aiResponse: ChatMessage = {
-        id: messages.length + 2,
-        type: 'assistant',
-        content: response.success 
-          ? response.message || 'No response from Claude'
-          : `Error: ${response.error}`,
-        timestamp: new Date().toLocaleTimeString()
-      };
+      if (response.success) {
+        addMessage({
+          type: 'assistant',
+          content: response.message || 'Action completed successfully'
+        });
 
-      setMessages(prev => [...prev, aiResponse]);
+        // If code was updated and Claude also executed it, we don't need to show additional messages
+        // as the execution feedback is already handled in the context
+      } else {
+        addMessage({
+          type: 'assistant',
+          content: `Error: ${response.error}`
+        });
+      }
     } catch (error) {
-      const errorResponse: ChatMessage = {
-        id: messages.length + 2,
+      addMessage({
         type: 'assistant',
-        content: `Failed to get response from Claude: ${error instanceof Error ? error.message : 'Unknown error'}`,
-        timestamp: new Date().toLocaleTimeString()
-      };
-
-      setMessages(prev => [...prev, errorResponse]);
-    } finally {
-      setIsLoading(false);
+        content: `Failed to get response from Claude: ${error instanceof Error ? error.message : 'Unknown error'}`
+      });
     }
   };
 
   return (
     <main>
       <CodeEditor 
-        code={code}
-        setCode={setCode}
+        code={state.code}
+        setCode={(code) => updateCode(code, 'user')}
         onRunCode={handleRunCode}
         onStopCode={handleStopCode}
       />
 
       <ChatPanel 
-        messages={messages}
+        messages={state.messages}
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
         onSendMessage={handleSendMessage}
-        isLoading={isLoading}
+        isLoading={state.isLoading}
         isValidKey={isValidKey}
         onShowApiKeyModal={() => setShowApiKeyModal(true)}
-        onClearMessages={handleClearMessages}
+        onClearMessages={clearMessages}
       />
 
       <Modal 
@@ -189,6 +151,14 @@ function App() {
         />
       </Modal>
     </main>
+  );
+}
+
+function App() {
+  return (
+    <AppProvider>
+      <AppContent />
+    </AppProvider>
   );
 }
 

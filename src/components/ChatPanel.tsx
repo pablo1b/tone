@@ -44,7 +44,7 @@ export function ChatPanel({
             >
               Settings
             </button>
-          <button onClick={onClearMessages} className="outline">
+          <button onClick={onClearMessages} style={{ outline: 'auto' }}>
             Clear
           </button>
         </div>
