@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { musicEngine } from './musicEngine';
-import CodeMirror from '@uiw/react-codemirror';
-import { javascript } from '@codemirror/lang-javascript';
-import { oneDark } from '@codemirror/theme-one-dark';
 import { claudeService, type ChatMessage } from './services/claudeService';
 import { ApiKeySettings } from './components/ApiKeySettings';
 import { Modal } from './components/Modal';
+import { CodeEditor } from './components/CodeEditor';
+import { ChatPanel } from './components/ChatPanel';
 import { useApiKey } from './hooks/useApiKey';
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
   }, [apiKey, isValidKey]);
 
   useEffect(() => {
-    // Open modal by default if no API key is present
     if (!isValidKey) {
       setShowApiKeyModal(true);
     }
@@ -88,6 +86,17 @@ function App() {
     setShowApiKeyModal(false);
   };
 
+  const handleClearMessages = () => {
+    setMessages([
+      {
+        id: 1,
+        type: 'assistant',
+        content: 'Hello! I\'m here to help you with Tone.js. What would you like to create?',
+        timestamp: new Date().toLocaleTimeString()
+      }
+    ]);
+  };
+
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!inputMessage.trim() || !isValidKey) return;
@@ -136,98 +145,23 @@ function App() {
 
   return (
     <main>
-      <section>
-        <header>
-          <div>
-            <p>Musical Agent</p>
-          </div>
-          <div style={{ flexGrow: 0 }}>
-            <button onClick={handleRunCode}>
-              Play
-            </button>
-            <button
-              onClick={handleStopCode}
-              disabled={!musicEngine.getIsPlaying()}
-            >
-              Stop
-            </button>
-            <button onClick={() => setCode('')} className="outline">
-              Clear
-            </button>
-          </div>
-        </header>
+      <CodeEditor 
+        code={code}
+        setCode={setCode}
+        onRunCode={handleRunCode}
+        onStopCode={handleStopCode}
+      />
 
-        <article>
-          <CodeMirror
-            value={code}
-            onChange={(value) => setCode(value)}
-            extensions={[javascript()]}
-            theme={oneDark}
-            placeholder="Write your Tone.js code here..."
-            basicSetup={{
-              lineNumbers: true,
-              foldGutter: true,
-              dropCursor: false,
-              allowMultipleSelections: false,
-            }}
-            style={{
-              fontSize: '14px',
-              border: '1px solid var(--pico-border-color)',
-              borderRadius: 'var(--pico-border-radius)',
-              minHeight: '300px'
-            }}
-          />
-        </article>
-      </section>
-
-      <section>
-        <header>
-          <div style={{ justifyContent: 'flex-end' }}>
-          <div>
-              {isValidKey ? (
-                <p>
-                  Claude 4
-                </p>
-              ) : (
-                <b>
-                  API Key Required
-                </b>
-              )}
-            </div>
-            <button 
-                onClick={() => setShowApiKeyModal(true)}
-                aria-label="API Settings"
-                title="Configure Claude API Key"
-              >
-                Settings
-              </button>
-            <button onClick={() => { }} className="outline">
-              Clear
-            </button>
-          </div>
-        </header>
-
-          {messages.map((message) => (
-            <div key={message.id}>
-              <p>{message.content}</p>
-              <small>{message.timestamp}</small>
-            </div>
-          ))}
-
-          <div style={{ flexGrow: 0 }}>
-            <form onSubmit={handleSendMessage}>
-              <input
-                type="text"
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                placeholder="Ask about Tone.js, request code examples, or get help..."
-              />
-              <button type="submit" disabled={!inputMessage.trim() || !isValidKey || isLoading}>
-                {isLoading ? 'Loading...' : 'Send'}
-              </button>
-            </form>
-          </div>
-      </section>
+      <ChatPanel 
+        messages={messages}
+        inputMessage={inputMessage}
+        setInputMessage={setInputMessage}
+        onSendMessage={handleSendMessage}
+        isLoading={isLoading}
+        isValidKey={isValidKey}
+        onShowApiKeyModal={() => setShowApiKeyModal(true)}
+        onClearMessages={handleClearMessages}
+      />
 
       <Modal 
         isOpen={showApiKeyModal} 
