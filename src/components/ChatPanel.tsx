@@ -51,9 +51,9 @@ export function ChatPanel({
       </header>
 
         {messages.map((message) => (
-          <div key={message.id}>
+          <div key={message.id} style={{ flex: 0, flexDirection: 'column', gap: 0 }}>
             <p>{message.content}</p>
-            <small>{message.timestamp}</small>
+            <small style={{ color: 'var(--text-muted)' }}>{message.timestamp}</small>
           </div>
         ))}
 

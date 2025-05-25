@@ -22,10 +22,16 @@ function App() {
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const { apiKey, isValidKey, saveApiKey, clearApiKey } = useApiKey();
 
+  // Initialize Claude service with existing API key on mount
   useEffect(() => {
-    console.log('useEffect triggered - isValidKey:', isValidKey, 'apiKey:', apiKey);
+    const savedKey = localStorage.getItem('anthropic_api_key');
+    if (savedKey && savedKey.startsWith('sk-ant-')) {
+      claudeService.updateApiKey(savedKey);
+    }
+  }, []);
+
+  useEffect(() => {
     if (isValidKey && apiKey) {
-      console.log('Updating Claude service from useEffect with key:', apiKey);
       claudeService.updateApiKey(apiKey);
     }
   }, [apiKey, isValidKey]);
@@ -83,11 +89,8 @@ function App() {
   };
 
   const handleApiKeyValidated = (apiKey: string) => {
-    console.log('handleApiKeyValidated called with:', apiKey);
     const success = saveApiKey(apiKey);
-    console.log('saveApiKey success:', success);
     if (success) {
-      console.log('Updating Claude service with key');
       claudeService.updateApiKey(apiKey);
     }
   };

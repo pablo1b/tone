@@ -8,7 +8,7 @@ export const useApiKey = () => {
 
   useEffect(() => {
     const savedKey = localStorage.getItem(API_KEY_STORAGE_KEY);
-    if (savedKey) {
+    if (savedKey && savedKey.startsWith('sk-ant-')) {
       setApiKey(savedKey);
       setIsValidKey(true);
     }

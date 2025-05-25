@@ -30,7 +30,6 @@ export class ClaudeService {
   }
 
   updateApiKey(apiKey: string) {
-    console.log('ClaudeService.updateApiKey called with:', apiKey ? `${apiKey.substring(0, 10)}...` : 'undefined/empty');
     this.anthropic = new Anthropic({
       apiKey,
       dangerouslyAllowBrowser: true
@@ -46,7 +45,7 @@ export class ClaudeService {
     }
 
     try {
-      const systemPrompt = `You are a Tone.js expert assistant. You help users create amazing audio applications with Tone.js.
+      const systemPrompt = `You are a classically trained electronic music composer and Tone.js expert assistant. You help users create beautiful, cuanced musical compositions with Tone.js.
 
 Current code in editor:
 \`\`\`javascript
