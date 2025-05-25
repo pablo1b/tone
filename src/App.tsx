@@ -1,10 +1,5 @@
 import React, { useState, useRef } from 'react';
 import * as Tone from 'tone';
-import {
-  Main, Section, Header, Footer, Article, Div, Button,
-  Input, Textarea, Form,
-  P, H3, Time
-} from './components';
 
 function App() {
   const [code, setCode] = useState(`// Welcome to Tone.js playground!
@@ -156,101 +151,65 @@ Tone.Transport.start();`);
   };
 
   return (
-    <Main flex flexDirection="row">
-      {/* Left Panel - Code Editor */}
-      <Section panel flex flexDirection="column" style={{ flex: 1, borderRight: '1px solid #e5e7eb' }}>
-        <Header bordered flex justifyContent="between" alignItems="center" padding="md">
-          <H3>Tone.js Code Editor</H3>
-          <Div flex gap="sm">
-            <Button variant="primary" size="small" onClick={handleRunCode}>
-              ▶ Run Code
-            </Button>
-            <Button 
-              variant="secondary" 
-              size="small" 
-              onClick={handleStopCode}
-              disabled={!isPlaying}
-            >
-              ⏹ Stop
-            </Button>
-            <Button variant="secondary" size="small" onClick={() => setCode('')}>
-              Clear
-            </Button>
-          </Div>
-        </Header>
+    <main>
+      <div>
+        <section>
+          <header>
+            <fieldset role="group">
+              <button onClick={handleRunCode}>
+                Play
+              </button>
+              <button 
+                onClick={handleStopCode}
+                disabled={!isPlaying}
+              >
+                Stop
+              </button>
+              <button onClick={() => setCode('')}>
+                Clear
+              </button>
+            </fieldset>
+          </header>
 
-        <Textarea
-          value={code}
-          onChange={(e) => setCode(e.target.value)}
-          style={{
-            flex: 1,
-            fontFamily: 'Monaco, Consolas, "Courier New", monospace',
-            fontSize: '14px',
-            lineHeight: '1.5',
-            resize: 'none',
-            border: '1px solid #d1d5db',
-            borderRadius: '8px',
-            padding: '1rem'
-          }}
-          placeholder="Write your Tone.js code here..."
-        />
-      </Section>
+          <article style={{ flex: 1, display: 'flex' }}>
+            <textarea
+              value={code}
+              onChange={(e) => setCode(e.target.value)}
+              placeholder="Write your Tone.js code here..."
+            />
+          </article>
+        </section>
 
-      {/* Right Panel - LLM Chatbot */}
-      <Section panel flex flexDirection="column" style={{ flex: 1 }}>
-        <Header bordered padding="md">
-          <H3>Tone.js Assistant</H3>
-          <P size="small" variant="muted">Ask me anything about Tone.js!</P>
-        </Header>
+        <section>
+          <header>
+            <p>Chat music</p>
+          </header>
 
-        {/* Chat Messages */}
+          <article>
+            <section>
+              {messages.map((message) => (
+                <div key={message.id}>
+                  <p>{message.content}</p>
+                  <small>{message.timestamp}</small>
+                </div>
+              ))}
+            </section>
 
-        {messages.map((message) => (
-          <Article
-            key={message.id}
-            card={message.type === 'assistant'}
-            elevated={message.type === 'assistant'}
-            style={{
-              alignSelf: message.type === 'user' ? 'flex-end' : 'flex-start',
-              maxWidth: '80%',
-              backgroundColor: message.type === 'user' ? '#3b82f6' : undefined,
-              color: message.type === 'user' ? 'white' : undefined
-            }}
-          >
-            <P variant={message.type === 'assistant' ? 'default' : undefined}>
-              {message.content}
-            </P>
-            <Time
-              variant="subtle"
-              size="small"
-              style={{
-                color: message.type === 'user' ? 'rgba(255,255,255,0.8)' : undefined
-              }}
-            >
-              {message.timestamp}
-            </Time>
-          </Article>
-        ))}
-
-        {/* Chat Input */}
-        <Footer bordered padding="md">
-          <Form onSubmit={handleSendMessage}>
-            <Div flex gap="sm">
-              <Input
+            <form onSubmit={handleSendMessage}>
+              <input
                 type="text"
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 placeholder="Ask about Tone.js, request code examples, or get help..."
-                style={{ flex: 1 }}
               />
-              <Button type="submit" variant="primary" disabled={!inputMessage.trim()}>
+              <button type="submit" disabled={!inputMessage.trim()}>
                 Send
-              </Button>
-            </Div>
-          </Form>
-        </Footer>
-      </Section>
-    </Main>
+              </button>
+            </form>
+          </article>
+        </section>
+      </div>
+    </main>
   );
 }
 
