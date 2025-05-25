@@ -1,5 +1,6 @@
 import React from 'react';
 import { type ChatMessage } from '../services/claudeService';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 interface ChatPanelProps {
   messages: ChatMessage[];
@@ -28,9 +29,12 @@ export function ChatPanel({
         <div style={{ justifyContent: 'flex-end' }}>
         <div>
             {isValidKey ? (
-              <p>
-                Claude 4
-              </p>
+              <div>
+                <p>Claude 4</p>
+                <small style={{ color: 'var(--text-muted)' }}>
+                  {messages.length}/20 messages
+                </small>
+              </div>
             ) : (
               <b>
                 API Key Required
@@ -52,7 +56,7 @@ export function ChatPanel({
 
         {messages.map((message) => (
           <div key={message.id} style={{ flex: 0, flexDirection: 'column', gap: 0 }}>
-            <p>{message.content}</p>
+            <MarkdownRenderer>{message.content}</MarkdownRenderer>
             <small style={{ color: 'var(--text-muted)' }}>{message.timestamp}</small>
           </div>
         ))}

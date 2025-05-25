@@ -4,6 +4,11 @@ import { type ChatMessage } from '../services/claudeService';
 import { type AppState, type AppAction, type AppContextType } from './AppTypes';
 import { AppContext } from './AppContextDefinition';
 
+// Maximum number of messages to keep in chat history
+const MAX_CHAT_MESSAGES = 20;
+// Maximum number of execution history items to keep
+const MAX_EXECUTION_HISTORY = 10;
+
 const initialState: AppState = {
   code: musicEngine.getDefaultCode(),
   isPlaying: false,
@@ -36,11 +41,24 @@ function appReducer(state: AppState, action: AppAction): AppState {
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
     
-    case 'ADD_MESSAGE':
+    case 'ADD_MESSAGE': {
+      const newMessages = [...state.messages, action.payload];
+      
+      // If we exceed the message limit, trim old messages while keeping the initial message
+      if (newMessages.length > MAX_CHAT_MESSAGES) {
+        const initialMessage = newMessages[0]; // Keep the welcome message
+        const recentMessages = newMessages.slice(-(MAX_CHAT_MESSAGES - 1)); // Keep recent messages
+        return {
+          ...state,
+          messages: [initialMessage, ...recentMessages]
+        };
+      }
+      
       return { 
         ...state, 
-        messages: [...state.messages, action.payload] 
+        messages: newMessages 
       };
+    }
     
     case 'CLEAR_MESSAGES':
       return { 
@@ -48,29 +66,33 @@ function appReducer(state: AppState, action: AppAction): AppState {
         messages: [initialState.messages[0]] 
       };
     
-    case 'ADD_EXECUTION_RESULT':
+    case 'ADD_EXECUTION_RESULT': {
+      const newHistory = [
+        ...state.executionHistory,
+        {
+          id: Date.now().toString(),
+          code: action.payload.code,
+          timestamp: new Date().toISOString(),
+          success: action.payload.success,
+          error: action.payload.error
+        }
+      ];
+      
+      // Keep only the most recent execution history items
+      const trimmedHistory = newHistory.length > MAX_EXECUTION_HISTORY 
+        ? newHistory.slice(-MAX_EXECUTION_HISTORY)
+        : newHistory;
+      
       return {
         ...state,
-        executionHistory: [
-          ...state.executionHistory,
-          {
-            id: Date.now().toString(),
-            code: action.payload.code,
-            timestamp: new Date().toISOString(),
-            success: action.payload.success,
-            error: action.payload.error
-          }
-        ]
+        executionHistory: trimmedHistory
       };
+    }
     
     default:
       return state;
   }
 }
-
-
-
-
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [state, dispatch] = useReducer(appReducer, initialState);

@@ -22,7 +22,7 @@
   --pico-primary-hover: var(--accent-light);
   --pico-primary-hover-background: var(--accent-light);
   --pico-primary-hover-border: var(--accent-light);
-  --pico-primary-focus: var(--accent-light);
+  --pico-primary-focus: var(--accent-gold);
   --pico-secondary: var(--accent-bronze);
   --pico-secondary-background: var(--bg-secondary);
   --pico-secondary-border: var(--accent-bronze);
@@ -40,7 +40,7 @@
   --pico-form-element-placeholder-color: var(--text-muted);
   --pico-form-element-active-background-color: var(--bg-secondary);
   --pico-form-element-active-border-color: var(--accent-gold);
-  --pico-form-element-focus-color: var(--text-primary);
+  --pico-form-element-focus-color: var(--accent-gold);
   --pico-form-element-disabled-background-color: var(--bg-tertiary);
   --pico-form-element-disabled-border-color: var(--bg-tertiary);
   --pico-form-element-disabled-opacity: 0.5;
