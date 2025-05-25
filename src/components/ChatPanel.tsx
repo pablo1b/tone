@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { type ChatMessage } from '../services/claudeService';
 import { MarkdownRenderer } from './MarkdownRenderer';
 
@@ -23,6 +23,16 @@ export function ChatPanel({
   onShowApiKeyModal, 
   onClearMessages 
 }: ChatPanelProps) {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isChatLoading]);
+
   return (
     <section style={{ maxWidth: '400px' }}>
       <header>
@@ -68,6 +78,8 @@ export function ChatPanel({
             </p>
           </div>
         )}
+
+        <div ref={messagesEndRef} />
 
         <div style={{ flexGrow: 0, position: 'sticky', bottom: 0, backgroundColor: 'var(--bg-primary)' }}>
           <form onSubmit={onSendMessage}>
