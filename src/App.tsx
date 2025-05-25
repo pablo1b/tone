@@ -199,7 +199,7 @@ Tone.Transport.start();`);
             </div>
           ))}
 
-          <div style={{ width: '100%' }}>
+          <div style={{ flexGrow: 0 }}>
             <form onSubmit={handleSendMessage}>
               <input
                 type="text"
