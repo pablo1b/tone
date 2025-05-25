@@ -3,4 +3,4 @@ description:
 globs: 
 alwaysApply: true
 ---
-The app is always running, no need to restart it.
+The app is always running. Do not do `npm run`. Do not write code comments otehr than JSDocs.
