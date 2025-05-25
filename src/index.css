@@ -114,3 +114,11 @@ header {
 section {
   overflow-y: auto;
 }
+
+/* Dialog modal styling */
+dialog {
+  padding: 2rem;
+  border: 1px solid var(--pico-border-color);
+  border-radius: var(--pico-border-radius);
+  background: var(--pico-background-color);
+}
