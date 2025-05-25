@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { theme } from '../theme';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
@@ -16,47 +16,72 @@ export const Button: React.FC<ButtonProps> = ({
   disabled = false,
   children,
   style,
+  onMouseDown,
+  onMouseUp,
+  onMouseLeave,
   ...props 
 }) => {
-  const getVariantStyles = (variant: ButtonVariant) => {
+  const [isPressed, setIsPressed] = useState(false);
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (!disabled) {
+      setIsPressed(true);
+    }
+    onMouseDown?.(e);
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsPressed(false);
+    onMouseUp?.(e);
+  };
+
+  const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
+    setIsPressed(false);
+    onMouseLeave?.(e);
+  };
+
+  const getVariantStyles = (variant: ButtonVariant, isPressed: boolean) => {
+    const getActiveColor = (baseColor: string, hoverColor: string) => {
+      // Make active state slightly darker than hover
+      return isPressed ? hoverColor : baseColor;
+    };
+
     switch (variant) {
       case 'primary':
         return {
-          backgroundColor: disabled ? theme.colors.disabled : theme.colors.primary,
+          backgroundColor: disabled 
+            ? theme.colors.disabled 
+            : getActiveColor(theme.colors.primary, theme.colors.primaryHover),
           color: theme.colors.textInverse,
           border: 'none',
-          ':hover': !disabled && {
-            backgroundColor: theme.colors.primaryHover,
-          },
+          transform: isPressed && !disabled ? 'translateY(1px)' : 'translateY(0)',
         };
       case 'secondary':
         return {
-          backgroundColor: 'transparent',
-          color: disabled ? theme.colors.disabled : theme.colors.secondary,
-          border: `1px solid ${disabled ? theme.colors.disabled : theme.colors.secondary}`,
-          ':hover': !disabled && {
-            backgroundColor: theme.colors.hover,
-            borderColor: theme.colors.secondaryHover,
-            color: theme.colors.secondaryHover,
-          },
+          backgroundColor: isPressed && !disabled ? theme.colors.hover : 'transparent',
+          color: disabled 
+            ? theme.colors.disabled 
+            : getActiveColor(theme.colors.secondary, theme.colors.secondaryHover),
+          border: `1px solid ${disabled 
+            ? theme.colors.disabled 
+            : getActiveColor(theme.colors.secondary, theme.colors.secondaryHover)}`,
+          transform: isPressed && !disabled ? 'translateY(1px)' : 'translateY(0)',
         };
       case 'danger':
         return {
-          backgroundColor: disabled ? theme.colors.disabled : theme.colors.danger,
+          backgroundColor: disabled 
+            ? theme.colors.disabled 
+            : getActiveColor(theme.colors.danger, theme.colors.dangerHover),
           color: theme.colors.textInverse,
           border: 'none',
-          ':hover': !disabled && {
-            backgroundColor: theme.colors.dangerHover,
-          },
+          transform: isPressed && !disabled ? 'translateY(1px)' : 'translateY(0)',
         };
       case 'ghost':
         return {
-          backgroundColor: 'transparent',
+          backgroundColor: isPressed && !disabled ? theme.colors.hover : 'transparent',
           color: disabled ? theme.colors.disabled : theme.colors.text,
           border: 'none',
-          ':hover': !disabled && {
-            backgroundColor: theme.colors.hover,
-          },
+          transform: isPressed && !disabled ? 'translateY(1px)' : 'translateY(0)',
         };
       default:
         return {};
@@ -89,14 +114,15 @@ export const Button: React.FC<ButtonProps> = ({
     fontWeight: theme.typography.fontWeight.semibold,
     borderRadius: theme.borderRadius.md,
     cursor: disabled ? 'not-allowed' : 'pointer',
-    transition: theme.transitions.normal,
+    transition: theme.transitions.fast,
     display: 'inline-flex',
     alignItems: 'center',
     justifyContent: 'center',
     textDecoration: 'none',
     outline: 'none',
+    userSelect: 'none',
     ...getSizeStyles(size),
-    ...getVariantStyles(variant),
+    ...getVariantStyles(variant, isPressed),
   };
 
   return (
@@ -106,6 +132,9 @@ export const Button: React.FC<ButtonProps> = ({
         ...style,
       }}
       disabled={disabled}
+      onMouseDown={handleMouseDown}
+      onMouseUp={handleMouseUp}
+      onMouseLeave={handleMouseLeave}
       {...props}
     >
       {children}
