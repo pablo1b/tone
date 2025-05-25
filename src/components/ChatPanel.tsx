@@ -7,7 +7,7 @@ interface ChatPanelProps {
   inputMessage: string;
   setInputMessage: (message: string) => void;
   onSendMessage: (e: React.FormEvent) => void;
-  isLoading: boolean;
+  isChatLoading: boolean;
   isValidKey: boolean;
   onShowApiKeyModal: () => void;
   onClearMessages: () => void;
@@ -18,7 +18,7 @@ export function ChatPanel({
   inputMessage, 
   setInputMessage, 
   onSendMessage, 
-  isLoading, 
+  isChatLoading,
   isValidKey, 
   onShowApiKeyModal, 
   onClearMessages 
@@ -61,7 +61,15 @@ export function ChatPanel({
           </div>
         ))}
 
-        <div style={{ flexGrow: 0 }}>
+        {isChatLoading && (
+          <div style={{ flex: 0, flexDirection: 'column', gap: 0 }}>
+            <p style={{ color: 'var(--text-muted)' }}>
+              <em className="thinking">Thinking</em>
+            </p>
+          </div>
+        )}
+
+        <div style={{ flexGrow: 0, position: 'sticky', bottom: 0, backgroundColor: 'var(--bg-primary)' }}>
           <form onSubmit={onSendMessage}>
             <input
               type="text"
@@ -69,8 +77,8 @@ export function ChatPanel({
               onChange={(e) => setInputMessage(e.target.value)}
               placeholder="Ask about Tone.js, request code examples, or get help..."
             />
-            <button type="submit" disabled={!inputMessage.trim() || !isValidKey || isLoading}>
-              {isLoading ? 'Loading...' : 'Send'}
+            <button type="submit" disabled={!inputMessage.trim() || !isValidKey || isChatLoading}>
+              {isChatLoading ? 'Loading...' : 'Send'}
             </button>
           </form>
         </div>

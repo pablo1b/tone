@@ -13,6 +13,7 @@ const initialState: AppState = {
   code: musicEngine.getDefaultCode(),
   isPlaying: false,
   isLoading: false,
+  isChatLoading: false,
   messages: [
     {
       id: 1,
@@ -40,6 +41,9 @@ function appReducer(state: AppState, action: AppAction): AppState {
     
     case 'SET_LOADING':
       return { ...state, isLoading: action.payload };
+    
+    case 'SET_CHAT_LOADING':
+      return { ...state, isChatLoading: action.payload };
     
     case 'ADD_MESSAGE': {
       const newMessages = [...state.messages, action.payload];
@@ -160,6 +164,10 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     dispatch({ type: 'CLEAR_MESSAGES' });
   }, []);
 
+  const setChatLoading = useCallback((loading: boolean) => {
+    dispatch({ type: 'SET_CHAT_LOADING', payload: loading });
+  }, []);
+
   const value: AppContextType = {
     state,
     dispatch,
@@ -167,7 +175,8 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
     executeCode,
     stopAudio,
     addMessage,
-    clearMessages
+    clearMessages,
+    setChatLoading
   };
 
   return (

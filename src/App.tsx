@@ -10,7 +10,7 @@ import { AppProvider } from './context/AppContext';
 import { useAppContext } from './context/useAppContext';
 
 function AppContent() {
-  const { state, updateCode, executeCode, stopAudio, addMessage, clearMessages } = useAppContext();
+  const { state, updateCode, executeCode, stopAudio, addMessage, clearMessages, setChatLoading } = useAppContext();
   const [inputMessage, setInputMessage] = useState('');
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
   const { apiKey, isValidKey, saveApiKey, clearApiKey } = useApiKey();
@@ -84,6 +84,7 @@ function AppContent() {
     });
 
     setInputMessage('');
+    setChatLoading(true);
 
     try {
       const response = await enhancedClaudeService.sendMessage({
@@ -115,6 +116,8 @@ function AppContent() {
         type: 'assistant',
         content: `Failed to get response from Claude: ${error instanceof Error ? error.message : 'Unknown error'}`
       });
+    } finally {
+      setChatLoading(false);
     }
   };
 
@@ -132,7 +135,7 @@ function AppContent() {
         inputMessage={inputMessage}
         setInputMessage={setInputMessage}
         onSendMessage={handleSendMessage}
-        isLoading={state.isLoading}
+        isChatLoading={state.isChatLoading}
         isValidKey={isValidKey}
         onShowApiKeyModal={() => setShowApiKeyModal(true)}
         onClearMessages={clearMessages}
