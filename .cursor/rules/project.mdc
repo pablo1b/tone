@@ -3,4 +3,4 @@ description:
 globs: 
 alwaysApply: true
 ---
-The app is always running. Do not do `npm run`. Do not write code comments otehr than JSDocs. Do not ever write css classes. Do not use `className`, ever. Do not use the `style` prop unless specifically insutrcted to do so by the user. Do not use specificity in CSS, do not use `main > div`, ever.
+The app is always running. Do not do `npm run`. Do not write code comments otehr than JSDocs. Do not ever write css classes. Do not use `className`, ever. Do not use specificity in CSS, do not use `main > div`, ever.
