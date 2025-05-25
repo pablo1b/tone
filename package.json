@@ -10,8 +10,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@codemirror/lang-javascript": "^6.2.4",
+    "@codemirror/theme-one-dark": "^6.1.2",
     "@picocss/pico": "^2.1.1",
     "@playwright/mcp": "^0.0.26",
+    "@uiw/react-codemirror": "^4.23.12",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "tone": "^15.2.4"

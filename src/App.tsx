@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { musicEngine } from './musicEngine';
+import CodeMirror from '@uiw/react-codemirror';
+import { javascript } from '@codemirror/lang-javascript';
+import { oneDark } from '@codemirror/theme-one-dark';
 
 function App() {
   const [code, setCode] = useState(musicEngine.getDefaultCode());
@@ -106,10 +109,24 @@ function App() {
         </header>
 
         <article>
-          <textarea
+          <CodeMirror
             value={code}
-            onChange={(e) => setCode(e.target.value)}
+            onChange={(value) => setCode(value)}
+            extensions={[javascript()]}
+            theme={oneDark}
             placeholder="Write your Tone.js code here..."
+            basicSetup={{
+              lineNumbers: true,
+              foldGutter: true,
+              dropCursor: false,
+              allowMultipleSelections: false,
+            }}
+            style={{
+              fontSize: '14px',
+              border: '1px solid var(--pico-border-color)',
+              borderRadius: 'var(--pico-border-radius)',
+              minHeight: '300px'
+            }}
           />
         </article>
       </section>
