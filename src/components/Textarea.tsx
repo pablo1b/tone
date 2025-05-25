@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme';
 
 type TextareaSize = 'small' | 'medium' | 'large';
 
@@ -15,8 +15,6 @@ export const Textarea: React.FC<TextareaProps> = ({
   style,
   ...props 
 }) => {
-  const theme = lightTheme; // TODO: Get from theme context
-
   const getSizeStyles = (size: TextareaSize) => {
     switch (size) {
       case 'small':

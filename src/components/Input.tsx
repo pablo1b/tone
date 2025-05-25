@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme';
 
 type InputSize = 'small' | 'medium' | 'large';
 
@@ -15,8 +15,6 @@ export const Input: React.FC<InputProps> = ({
   style,
   ...props 
 }) => {
-  const theme = lightTheme; // TODO: Get from theme context
-
   const getSizeStyles = (size: InputSize) => {
     switch (size) {
       case 'small':

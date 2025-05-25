@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme';
 
 type ListStyle = 'default' | 'unstyled';
 type Gap = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
@@ -23,7 +23,7 @@ export const Ul: React.FC<UlProps> = ({
   children, 
   ...props 
 }) => {
-  const theme = lightTheme;
+  
   
   const baseStyles: React.CSSProperties = {
     margin: 0,
@@ -63,7 +63,7 @@ export const Ol: React.FC<OlProps> = ({
   children, 
   ...props 
 }) => {
-  const theme = lightTheme;
+  
   
   const baseStyles: React.CSSProperties = {
     margin: 0,
@@ -102,7 +102,7 @@ export const Li: React.FC<LiProps> = ({
   children, 
   ...props 
 }) => {
-  const theme = lightTheme;
+  
   
   const baseStyles: React.CSSProperties = {
     margin: 0,

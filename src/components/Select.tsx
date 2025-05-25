@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme/';
 
 type SelectSize = 'small' | 'medium' | 'large';
 
@@ -16,8 +16,6 @@ export const Select: React.FC<SelectProps> = ({
   children,
   ...props 
 }) => {
-  const theme = lightTheme; // TODO: Get from theme context
-
   const getSizeStyles = (size: SelectSize) => {
     switch (size) {
       case 'small':

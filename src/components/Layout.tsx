@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme/';
 
 type FlexDirection = 'row' | 'column';
 type JustifyContent = 'start' | 'center' | 'end' | 'between' | 'around';
@@ -20,7 +20,7 @@ interface BaseLayoutProps {
   elevated?: boolean;
 }
 
-const getLayoutStyles = (props: BaseLayoutProps, theme: typeof lightTheme) => {
+const getLayoutStyles = (props: BaseLayoutProps) => {
   const {
     flex,
     flexDirection,
@@ -100,8 +100,8 @@ interface MainProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {
 }
 
 export const Main: React.FC<MainProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <main style={{ ...layoutStyles, ...style }} {...props}>
@@ -116,8 +116,8 @@ interface SectionProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement
 }
 
 export const Section: React.FC<SectionProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <section style={{ ...layoutStyles, ...style }} {...props}>
@@ -130,8 +130,8 @@ export const Section: React.FC<SectionProps> = ({ style, children, ...props }) =
 interface HeaderProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
 
 export const Header: React.FC<HeaderProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <header style={{ ...layoutStyles, ...style }} {...props}>
@@ -144,8 +144,8 @@ export const Header: React.FC<HeaderProps> = ({ style, children, ...props }) => 
 interface FooterProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
 
 export const Footer: React.FC<FooterProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <footer style={{ ...layoutStyles, ...style }} {...props}>
@@ -158,8 +158,8 @@ export const Footer: React.FC<FooterProps> = ({ style, children, ...props }) => 
 interface ArticleProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
 
 export const Article: React.FC<ArticleProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <article style={{ ...layoutStyles, ...style }} {...props}>
@@ -172,8 +172,8 @@ export const Article: React.FC<ArticleProps> = ({ style, children, ...props }) =
 interface DivProps extends BaseLayoutProps, React.HTMLAttributes<HTMLDivElement> {}
 
 export const Div: React.FC<DivProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <div style={{ ...layoutStyles, ...style }} {...props}>
@@ -186,8 +186,8 @@ export const Div: React.FC<DivProps> = ({ style, children, ...props }) => {
 interface FormProps extends BaseLayoutProps, React.FormHTMLAttributes<HTMLFormElement> {}
 
 export const Form: React.FC<FormProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   return (
     <form style={{ ...layoutStyles, ...style }} {...props}>
@@ -202,8 +202,8 @@ interface FieldsetProps extends BaseLayoutProps, React.FieldsetHTMLAttributes<HT
 }
 
 export const Fieldset: React.FC<FieldsetProps> = ({ borderless = false, style, children, ...props }) => {
-  const theme = lightTheme;
-  const layoutStyles = getLayoutStyles(props, theme);
+  
+  const layoutStyles = getLayoutStyles(props);
   
   const fieldsetStyles = borderless ? {
     border: 'none',

@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme';
 
 type TextSize = 'small' | 'medium' | 'large';
 type TextVariant = 'default' | 'muted' | 'subtle' | 'bold';
@@ -9,7 +9,7 @@ interface BaseTextProps {
   variant?: TextVariant;
 }
 
-const getTextStyles = (size: TextSize, variant: TextVariant, theme: typeof lightTheme) => {
+const getTextStyles = (size: TextSize, variant: TextVariant) => {
   const sizeStyles = {
     small: { fontSize: theme.typography.fontSize.sm },
     medium: { fontSize: theme.typography.fontSize.base },
@@ -38,10 +38,10 @@ interface HeadingProps extends BaseTextProps, React.HTMLAttributes<HTMLHeadingEl
 }
 
 export const H1: React.FC<HeadingProps> = ({ size = 'large', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h1 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize['4xl'],
       fontWeight: theme.typography.fontWeight.bold,
       ...style 
@@ -52,10 +52,10 @@ export const H1: React.FC<HeadingProps> = ({ size = 'large', variant = 'default'
 };
 
 export const H2: React.FC<HeadingProps> = ({ size = 'large', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h2 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize['3xl'],
       fontWeight: theme.typography.fontWeight.bold,
       ...style 
@@ -66,10 +66,10 @@ export const H2: React.FC<HeadingProps> = ({ size = 'large', variant = 'default'
 };
 
 export const H3: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h3 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize['2xl'],
       fontWeight: theme.typography.fontWeight.semibold,
       ...style 
@@ -80,10 +80,10 @@ export const H3: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default
 };
 
 export const H4: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h4 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize.xl,
       fontWeight: theme.typography.fontWeight.semibold,
       ...style 
@@ -94,10 +94,10 @@ export const H4: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default
 };
 
 export const H5: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h5 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize.lg,
       fontWeight: theme.typography.fontWeight.medium,
       ...style 
@@ -108,10 +108,10 @@ export const H5: React.FC<HeadingProps> = ({ size = 'medium', variant = 'default
 };
 
 export const H6: React.FC<HeadingProps> = ({ size = 'small', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <h6 style={{ 
-      ...getTextStyles(size, variant, theme), 
+      ...getTextStyles(size, variant), 
       fontSize: theme.typography.fontSize.base,
       fontWeight: theme.typography.fontWeight.medium,
       ...style 
@@ -127,10 +127,10 @@ interface ParagraphProps extends BaseTextProps, React.HTMLAttributes<HTMLParagra
 }
 
 export const P: React.FC<ParagraphProps> = ({ size = 'medium', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <p style={{ 
-      ...getTextStyles(size, variant, theme),
+      ...getTextStyles(size, variant),
       marginBottom: theme.spacing.md,
       ...style 
     }} {...props}>
@@ -145,10 +145,10 @@ interface SpanProps extends BaseTextProps, React.HTMLAttributes<HTMLSpanElement>
 }
 
 export const Span: React.FC<SpanProps> = ({ size = 'medium', variant = 'default', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <span style={{ 
-      ...getTextStyles(size, variant, theme),
+      ...getTextStyles(size, variant),
       ...style 
     }} {...props}>
       {children}
@@ -162,10 +162,10 @@ interface TimeProps extends BaseTextProps, React.TimeHTMLAttributes<HTMLTimeElem
 }
 
 export const Time: React.FC<TimeProps> = ({ size = 'small', variant = 'subtle', style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <time style={{ 
-      ...getTextStyles(size, variant, theme),
+      ...getTextStyles(size, variant),
       ...style 
     }} {...props}>
       {children}
@@ -180,7 +180,7 @@ interface CodeProps extends BaseTextProps, React.HTMLAttributes<HTMLElement> {
 }
 
 export const Code: React.FC<CodeProps> = ({ inline = false, style, children, ...props }) => {
-  const theme = lightTheme;
+  
   const baseStyles = {
     fontFamily: theme.typography.fontFamily.mono,
     backgroundColor: theme.colors.surface,
@@ -210,7 +210,7 @@ interface PreProps extends React.HTMLAttributes<HTMLPreElement> {
 }
 
 export const Pre: React.FC<PreProps> = ({ style, children, ...props }) => {
-  const theme = lightTheme;
+  
   return (
     <pre style={{ 
       fontFamily: theme.typography.fontFamily.mono,

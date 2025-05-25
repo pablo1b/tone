@@ -1,5 +1,5 @@
 import React from 'react';
-import { lightTheme } from '../theme/lightTheme';
+import { theme } from '../theme';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'ghost';
 type ButtonSize = 'small' | 'medium' | 'large';
@@ -18,8 +18,6 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   ...props 
 }) => {
-  const theme = lightTheme; // TODO: Get from theme context
-
   const getVariantStyles = (variant: ButtonVariant) => {
     switch (variant) {
       case 'primary':
