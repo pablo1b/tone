@@ -157,7 +157,7 @@ Tone.Transport.start();`);
           <div>
             <p>Musical Agent</p>
           </div>
-          <fieldset>
+          <div style={{ flexGrow: 0 }}>
             <button onClick={handleRunCode}>
               Play
             </button>
@@ -167,10 +167,10 @@ Tone.Transport.start();`);
             >
               Stop
             </button>
-            <button onClick={() => setCode('')}>
+            <button onClick={() => setCode('')} className="outline">
               Clear
             </button>
-          </fieldset>
+          </div>
         </header>
 
         <article>
@@ -184,12 +184,11 @@ Tone.Transport.start();`);
 
       <section>
         <header>
-          <p>Chat music</p>
-          <fieldset>
-            <button onClick={() => { }}>
+          <div style={{ justifyContent: 'flex-end' }}>
+            <button onClick={() => { }} className="outline">
               Clear
             </button>
-          </fieldset>
+          </div>
         </header>
 
           {messages.map((message) => (
