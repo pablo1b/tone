@@ -1,3 +1,6 @@
+/* Theme colors */
+@import './color.css';
+
 /* Pico CSS overrides */
 /* https://picocss.com/docs/css-variables#all-css-variables */
 :root {
