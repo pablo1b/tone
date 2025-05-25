@@ -26,8 +26,8 @@ const getLayoutStyles = (props: BaseLayoutProps) => {
     flexDirection,
     justifyContent,
     alignItems,
-    gap,
-    padding,
+    gap = 'sm', // Default gap
+    padding = 'sm', // Default padding
     bordered,
     panel,
     card,
@@ -35,6 +35,9 @@ const getLayoutStyles = (props: BaseLayoutProps) => {
   } = props;
 
   const baseStyles: React.CSSProperties = {};
+
+  // Always apply default padding
+  baseStyles.padding = theme.spacing[padding];
 
   if (flex) {
     baseStyles.display = 'flex';
@@ -60,13 +63,8 @@ const getLayoutStyles = (props: BaseLayoutProps) => {
       };
       baseStyles.alignItems = alignMap[alignItems];
     }
-    if (gap) {
-      baseStyles.gap = theme.spacing[gap];
-    }
-  }
-
-  if (padding) {
-    baseStyles.padding = theme.spacing[padding];
+    // Always apply default gap when flex is true
+    baseStyles.gap = theme.spacing[gap];
   }
 
   if (bordered) {
@@ -118,7 +116,7 @@ export const Main: React.FC<MainProps> = ({
   const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <main style={{ ...layoutStyles, ...style }} {...htmlProps}>
+    <main style={{ height: `calc(100vh - calc(${theme.spacing[padding || 'sm']} * 2))`, ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </main>
   );
@@ -148,7 +146,7 @@ export const Section: React.FC<SectionProps> = ({
   const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <section style={{ ...layoutStyles, ...style }} {...htmlProps}>
+    <section style={{ height: '100%', ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </section>
   );
@@ -238,7 +236,7 @@ export const Article: React.FC<ArticleProps> = ({
   const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <article style={{ ...layoutStyles, ...style }} {...htmlProps}>
+    <article style={{ width: '100%', ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </article>
   );

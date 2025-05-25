@@ -47,8 +47,8 @@ export const Textarea: React.FC<TextareaProps> = ({
     color: disabled ? theme.colors.textMuted : theme.colors.text,
     transition: theme.transitions.normal,
     outline: 'none',
-    width: '100%',
     resize: 'vertical',
+    flex: 1,
     ...getSizeStyles(size),
   };
 
