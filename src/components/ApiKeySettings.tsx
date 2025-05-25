@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
-import { useApiKey } from '../hooks/useApiKey';
 
 interface ApiKeySettingsProps {
   onKeyValidated: (apiKey: string) => void;
   onClose: () => void;
+  isValidKey?: boolean;
+  onClearKey?: () => void;
 }
 
-export const ApiKeySettings: React.FC<ApiKeySettingsProps> = ({ onKeyValidated, onClose }) => {
-  const { isValidKey, saveApiKey, clearApiKey } = useApiKey();
+export const ApiKeySettings: React.FC<ApiKeySettingsProps> = ({ 
+  onKeyValidated, 
+  onClose, 
+  isValidKey = false,
+  onClearKey 
+}) => {
   const [inputKey, setInputKey] = useState('');
   const [error, setError] = useState('');
 
@@ -15,9 +20,9 @@ export const ApiKeySettings: React.FC<ApiKeySettingsProps> = ({ onKeyValidated, 
     e.preventDefault();
     setError('');
     
-    const success = saveApiKey(inputKey);
-    if (success) {
-      onKeyValidated(inputKey);
+    const trimmedKey = inputKey.trim();
+    if (trimmedKey.startsWith('sk-ant-')) {
+      onKeyValidated(trimmedKey);
       setInputKey('');
       onClose();
     } else {
@@ -26,7 +31,9 @@ export const ApiKeySettings: React.FC<ApiKeySettingsProps> = ({ onKeyValidated, 
   };
 
   const handleClearKey = () => {
-    clearApiKey();
+    if (onClearKey) {
+      onClearKey();
+    }
     setInputKey('');
     setError('');
   };

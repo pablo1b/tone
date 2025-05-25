@@ -20,10 +20,12 @@ function App() {
   const [inputMessage, setInputMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [showApiKeyModal, setShowApiKeyModal] = useState(false);
-  const { apiKey, isValidKey } = useApiKey();
+  const { apiKey, isValidKey, saveApiKey, clearApiKey } = useApiKey();
 
   useEffect(() => {
+    console.log('useEffect triggered - isValidKey:', isValidKey, 'apiKey:', apiKey);
     if (isValidKey && apiKey) {
+      console.log('Updating Claude service from useEffect with key:', apiKey);
       claudeService.updateApiKey(apiKey);
     }
   }, [apiKey, isValidKey]);
@@ -31,6 +33,8 @@ function App() {
   useEffect(() => {
     if (!isValidKey) {
       setShowApiKeyModal(true);
+    } else {
+      setShowApiKeyModal(false);
     }
   }, [isValidKey]);
 
@@ -79,7 +83,13 @@ function App() {
   };
 
   const handleApiKeyValidated = (apiKey: string) => {
-    claudeService.updateApiKey(apiKey);
+    console.log('handleApiKeyValidated called with:', apiKey);
+    const success = saveApiKey(apiKey);
+    console.log('saveApiKey success:', success);
+    if (success) {
+      console.log('Updating Claude service with key');
+      claudeService.updateApiKey(apiKey);
+    }
   };
 
   const handleCloseApiKeyModal = () => {
@@ -171,6 +181,8 @@ function App() {
         <ApiKeySettings 
           onKeyValidated={handleApiKeyValidated} 
           onClose={handleCloseApiKeyModal}
+          isValidKey={isValidKey}
+          onClearKey={clearApiKey}
         />
       </Modal>
     </main>

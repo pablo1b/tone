@@ -23,7 +23,7 @@ export function ChatPanel({
   onClearMessages 
 }: ChatPanelProps) {
   return (
-    <section style={{ maxWidth: '350px' }}>
+    <section style={{ maxWidth: '400px' }}>
       <header>
         <div style={{ justifyContent: 'flex-end' }}>
         <div>

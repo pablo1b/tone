@@ -30,6 +30,7 @@ export class ClaudeService {
   }
 
   updateApiKey(apiKey: string) {
+    console.log('ClaudeService.updateApiKey called with:', apiKey ? `${apiKey.substring(0, 10)}...` : 'undefined/empty');
     this.anthropic = new Anthropic({
       apiKey,
       dangerouslyAllowBrowser: true
