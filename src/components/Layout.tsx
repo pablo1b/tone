@@ -99,12 +99,26 @@ interface MainProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {
   children: React.ReactNode;
 }
 
-export const Main: React.FC<MainProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Main: React.FC<MainProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <main style={{ ...layoutStyles, ...style }} {...props}>
+    <main style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </main>
   );
@@ -115,82 +129,176 @@ interface SectionProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement
   children: React.ReactNode;
 }
 
-export const Section: React.FC<SectionProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Section: React.FC<SectionProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <section style={{ ...layoutStyles, ...style }} {...props}>
+    <section style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </section>
   );
 };
 
 // Header Component
-interface HeaderProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
+interface HeaderProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {
+  children: React.ReactNode;
+}
 
-export const Header: React.FC<HeaderProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Header: React.FC<HeaderProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <header style={{ ...layoutStyles, ...style }} {...props}>
+    <header style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </header>
   );
 };
 
 // Footer Component
-interface FooterProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
+interface FooterProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {
+  children: React.ReactNode;
+}
 
-export const Footer: React.FC<FooterProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Footer: React.FC<FooterProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <footer style={{ ...layoutStyles, ...style }} {...props}>
+    <footer style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </footer>
   );
 };
 
 // Article Component
-interface ArticleProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {}
+interface ArticleProps extends BaseLayoutProps, React.HTMLAttributes<HTMLElement> {
+  children: React.ReactNode;
+}
 
-export const Article: React.FC<ArticleProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Article: React.FC<ArticleProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <article style={{ ...layoutStyles, ...style }} {...props}>
+    <article style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </article>
   );
 };
 
 // Div Component
-interface DivProps extends BaseLayoutProps, React.HTMLAttributes<HTMLDivElement> {}
+interface DivProps extends BaseLayoutProps, React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode;
+}
 
-export const Div: React.FC<DivProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Div: React.FC<DivProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <div style={{ ...layoutStyles, ...style }} {...props}>
+    <div style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </div>
   );
 };
 
 // Form Component
-interface FormProps extends BaseLayoutProps, React.FormHTMLAttributes<HTMLFormElement> {}
+interface FormProps extends BaseLayoutProps, React.FormHTMLAttributes<HTMLFormElement> {
+  children: React.ReactNode;
+}
 
-export const Form: React.FC<FormProps> = ({ style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Form: React.FC<FormProps> = ({ 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   return (
-    <form style={{ ...layoutStyles, ...style }} {...props}>
+    <form style={{ ...layoutStyles, ...style }} {...htmlProps}>
       {children}
     </form>
   );
@@ -199,11 +307,27 @@ export const Form: React.FC<FormProps> = ({ style, children, ...props }) => {
 // Fieldset Component
 interface FieldsetProps extends BaseLayoutProps, React.FieldsetHTMLAttributes<HTMLFieldSetElement> {
   borderless?: boolean;
+  children: React.ReactNode;
 }
 
-export const Fieldset: React.FC<FieldsetProps> = ({ borderless = false, style, children, ...props }) => {
-  
-  const layoutStyles = getLayoutStyles(props);
+export const Fieldset: React.FC<FieldsetProps> = ({ 
+  borderless = false, 
+  style, 
+  children, 
+  flex,
+  flexDirection,
+  justifyContent,
+  alignItems,
+  gap,
+  padding,
+  bordered,
+  panel,
+  card,
+  elevated,
+  ...htmlProps 
+}) => {
+  const layoutProps = { flex, flexDirection, justifyContent, alignItems, gap, padding, bordered, panel, card, elevated };
+  const layoutStyles = getLayoutStyles(layoutProps);
   
   const fieldsetStyles = borderless ? {
     border: 'none',
@@ -216,7 +340,7 @@ export const Fieldset: React.FC<FieldsetProps> = ({ borderless = false, style, c
   };
   
   return (
-    <fieldset style={{ ...layoutStyles, ...fieldsetStyles, ...style }} {...props}>
+    <fieldset style={{ ...layoutStyles, ...fieldsetStyles, ...style }} {...htmlProps}>
       {children}
     </fieldset>
   );
