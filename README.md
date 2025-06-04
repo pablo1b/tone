@@ -11,6 +11,10 @@ An interactive web-based musical coding environment powered by Tone.js with AI a
 - **Interactive Chat**: Conversational interface for learning and troubleshooting
 - **Dark Theme**: Beautiful coding environment with the One Dark theme
 
+## Note: Not Internet Safe
+
+Run this app locally, it is not secured and not ready to be run on an open server.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
