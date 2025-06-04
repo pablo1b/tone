@@ -53,7 +53,7 @@ export class EnhancedClaudeService {
       const tools = this.buildTools();
 
       const response = await this.anthropic.messages.create({
-        model: 'claude-3-5-sonnet-20241022',
+        model: 'claude-sonnet-4-0',
         max_tokens: 3000,
         system: systemPrompt,
         messages: [
@@ -103,7 +103,7 @@ export class EnhancedClaudeService {
       return {
         success: true,
         message: responseText || 'Action completed successfully',
-        model: 'claude-3.5-sonnet',
+        model: 'claude-sonnet-4-0',
         actionsExecuted,
         codeUpdated
       };

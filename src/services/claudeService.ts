@@ -64,7 +64,7 @@ Guidelines:
 - Use extended thinking to analyze complex problems thoroughly`;
 
       const response = await this.anthropic.messages.create({
-        model: 'claude-opus-4-20250514',
+        model: 'claude-sonnet-4-0',
         max_tokens: 2000,
         system: systemPrompt,
         messages: [
@@ -81,7 +81,7 @@ Guidelines:
         return {
           success: true,
           message: aiResponse.text,
-          model: 'claude-opus-4'
+          model: 'claude-sonnet-4-0'
         };
       } else {
         return {
