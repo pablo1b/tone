@@ -16,7 +16,7 @@ export function CodeEditor({ code, setCode, onRunCode, onStopCode }: CodeEditorP
     <section>
       <header>
         <div>
-          <p>Musical Agent</p>
+          <h3>tone.ai</h3>
         </div>
         <div style={{ flexGrow: 0 }}>
           <button onClick={onRunCode}>
