@@ -1,4 +1,4 @@
-# Tone.js AI Playground
+# tone.ai, a tone.js AI Playground
 
 An interactive web-based musical coding environment powered by Tone.js with AI assistance from Claude. Create, experiment, and learn music programming with real-time feedback and intelligent code suggestions.
 
