@@ -1,54 +1,151 @@
-# React + TypeScript + Vite
+# Tone.js AI Playground
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An interactive web-based musical coding environment powered by Tone.js with AI assistance from Claude. Create, experiment, and learn music programming with real-time feedback and intelligent code suggestions.
 
-Currently, two official plugins are available:
+## 🎵 Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **Live Code Editor**: Write and execute Tone.js code with syntax highlighting and auto-completion
+- **Real-time Audio**: Instant audio feedback with play/stop controls
+- **AI Assistant**: Get help with music programming from Claude AI
+- **Safe Execution**: Secure code execution environment with proper resource management
+- **Interactive Chat**: Conversational interface for learning and troubleshooting
+- **Dark Theme**: Beautiful coding environment with the One Dark theme
 
-## Expanding the ESLint configuration
+## 🚀 Getting Started
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Prerequisites
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+- Node.js (version 14 or higher)
+- npm or yarn package manager
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone <repository-url>
+cd tone
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+2. Install dependencies:
+```bash
+npm install
 ```
+
+3. Start the development server:
+```bash
+npm run dev
+```
+
+4. Open your browser and navigate to `http://localhost:5173`
+
+### API Configuration
+
+To use the AI assistant features, you'll need to configure your Anthropic API key:
+
+1. Click the "Configure API Key" button when prompted
+2. Enter your Anthropic API key (starts with `sk-ant-`)
+3. The key is stored locally in your browser for future sessions
+
+## 🎯 Usage
+
+### Basic Code Execution
+
+Write Tone.js code in the editor and click **Play** to execute it. Here's a simple example:
+
+```javascript
+// Create a simple synth
+const synth = new Tone.Synth().toDestination();
+
+// Play a note
+synth.triggerAttackRelease("C4", "8n");
+```
+
+### AI Assistant
+
+Use the chat panel to:
+- Ask for help with Tone.js concepts
+- Request code examples and explanations  
+- Get debugging assistance
+- Learn music theory and synthesis techniques
+
+Example prompts:
+- "Create a drum pattern with kick and snare"
+- "How do I make a reverb effect?"
+- "Generate a pentatonic scale melody"
+
+### Advanced Features
+
+- **Transport Control**: Use `Tone.Transport` for sequencing and timing
+- **Effects Processing**: Add reverb, delay, distortion and other effects
+- **Synthesis**: Explore different synthesizer types (FM, AM, Additive)
+- **Sampling**: Load and manipulate audio samples
+- **MIDI**: Connect external MIDI controllers (browser permitting)
+
+## 🛠️ Technology Stack
+
+- **Frontend**: React 18 + TypeScript
+- **Build Tool**: Vite
+- **Audio Engine**: Tone.js
+- **Code Editor**: CodeMirror 6
+- **AI Integration**: Anthropic Claude API
+- **Styling**: Pico CSS framework
+- **Browser Automation**: Playwright (for enhanced features)
+
+## 📁 Project Structure
+
+```
+src/
+├── components/          # React components
+│   ├── CodeEditor.tsx   # Main code editor interface  
+│   ├── ChatPanel.tsx    # AI chat interface
+│   └── ...
+├── context/             # React context providers
+├── hooks/               # Custom React hooks
+├── services/            # API and business logic
+│   ├── enhancedClaudeService.ts  # Claude AI integration
+│   └── codeActionService.ts      # Code execution service
+├── musicEngine.ts       # Core Tone.js execution engine
+└── App.tsx             # Main application component
+```
+
+## 🎹 Example Projects
+
+The playground comes with built-in examples to get you started:
+
+- **Basic Synthesis**: Simple oscillator and envelope controls
+- **Drum Machines**: Pattern-based percussion programming  
+- **Melodic Sequences**: Scale-based melody generation
+- **Effects Chains**: Audio processing and signal routing
+- **Interactive Instruments**: Mouse/keyboard controlled synths
+
+## 🔧 Development
+
+### Available Scripts
+
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run preview` - Preview production build
+- `npm run lint` - Run ESLint
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
+
+## 📚 Resources
+
+- [Tone.js Documentation](https://tonejs.github.io/)
+- [Web Audio API Reference](https://developer.mozilla.org/docs/Web/API/Web_Audio_API)
+- [Music Theory Basics](https://musictheory.net/)
+- [Anthropic Claude API](https://docs.anthropic.com/)
+
+## 📄 License
+
+This project is open source and available under the [MIT License](LICENSE).
+
+## 🎶 Happy Music Making!
+
+Whether you're a beginner learning the basics of computer music or an experienced developer exploring new sonic territories, this playground provides the tools and AI guidance to bring your musical ideas to life.
